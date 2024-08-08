@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "device-monitor"
+version = "1.0.0"
+description = "Monitoring of various devices."
+authors = ["Lukasz Zmudzinski <lukasz@zmudzinski.me>"]
+readme = "README.md"
+packages = [{include = "device_monitor"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
