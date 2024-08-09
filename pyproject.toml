@@ -33,6 +33,7 @@ select = [
 disallow_untyped_defs = true
 disable_error_code = [
     "import-untyped",
+    "import-not-found",
 ]
 
 [tool.pytest.ini_options]
