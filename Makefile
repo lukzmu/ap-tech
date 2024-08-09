@@ -8,15 +8,15 @@ enter:
 	@docker compose run demo bash
 
 lint:
-	@docker compose run demo -c " \
-		echo --- RUFF --- "
+	@docker compose run demo bash -c " \
+		echo --- RUFF --- \
 		&& ruff check \
 		&& echo --- MYPY --- \
-		&& mypy ."
+		&& mypy device_monitor"
 
 lint-autofix:
-	@docker compose run demo -c " \
-		echo --- RUFF --- "
+	@docker compose run demo bash -c " \
+		echo --- RUFF --- \
 		&& ruff check --fix"
 
 test:
