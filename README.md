@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/lukzmu/ap-tech/graph/badge.svg?token=VZ1R9DVT79)](https://codecov.io/gh/lukzmu/ap-tech)
+
 # Device Monitor
 
 This project is part of a recruitment task for AP-Tech.
