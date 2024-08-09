@@ -20,3 +20,4 @@ This project is part of a recruitment task for AP-Tech.
 | `make lint` | Check code for linting errors |
 | `make lint-autofix` | Automatically fix linting errors |
 | `make test` | Run project tests |
+| `make test-cov` | Check code coverage |

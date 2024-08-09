@@ -21,3 +21,6 @@ lint-autofix:
 
 test:
 	@docker compose run demo pytest
+
+test-cov:
+	@docker compose run demo pytest --cov=device_monitor tests
