@@ -9,6 +9,11 @@ packages = [{include = "device_monitor"}]
 [tool.poetry.dependencies]
 python = "^3.12"
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.7"
+mypy = "^1.11.1"
+pytest = "^8.3.2"
+pytest-cov = "^5.0.0"
 
 [build-system]
 requires = ["poetry-core"]
