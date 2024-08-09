@@ -18,4 +18,8 @@ class DeviceDataMapper(AbstractMapper[DeviceData]):
 
     @staticmethod
     def model_to_dict(model: DeviceData) -> dict[str, Any]:
-        return {model.device_id: model.data}
+        return {
+            model.device_id: {
+                f"output_{key}": value for key, value in model.data.items()
+            }
+        }
