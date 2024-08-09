@@ -1,25 +1,21 @@
 from typing import Any
 
 from core.mappers import AbstractMapper
-from core.models import Device, DeviceData
+from core.models import Device
 
 
 class DeviceMapper(AbstractMapper[Device]):
     @staticmethod
     def dict_to_model(data: dict[str, Any]) -> Device:
-        return Device(id=data["device_id"], expected_fields=data["expected_fields"])
-
-
-class DeviceDataMapper(AbstractMapper[DeviceData]):
-    @staticmethod
-    def dict_to_model(data: dict[str, Any]) -> DeviceData:
-        device_id = data.pop("device_id")
-        return DeviceData(device_id=device_id, data=data)
+        return Device(
+            id=data["device_id"],
+            expected_fields=data["expected_fields"],
+        )
 
     @staticmethod
-    def model_to_dict(model: DeviceData) -> dict[str, Any]:
+    def model_to_dict(model: Device) -> dict[str, Any]:
         return {
-            model.device_id: {
-                f"output_{key}": value for key, value in model.data.items()
-            }
+            f"output_{reading_name}": reading_value
+            for reading_name, reading_value in model.readings.items()
+            if reading_name in model.expected_fields
         }

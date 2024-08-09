@@ -5,9 +5,4 @@ from dataclasses import dataclass
 class Device:
     id: int
     expected_fields: list[str]
-
-
-@dataclass(frozen=True)
-class DeviceData:
-    device_id: int
-    data: dict[str, str | int | bool | float]
+    readings: dict[str, str | int | bool | float | None] | None = None
