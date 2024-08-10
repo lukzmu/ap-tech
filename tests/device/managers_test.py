@@ -89,7 +89,7 @@ class TestDeviceMonitor:
             device_monitor._devices = [device]
 
             device_monitor.start()
-            time.sleep(1)  # Allow time for the worker thread to update the devices
+            time.sleep(2)  # Allow time for the worker thread to update the devices
 
             device_monitor.is_running = False
 
