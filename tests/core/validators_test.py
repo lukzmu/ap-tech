@@ -1,5 +1,5 @@
-import threading
 from datetime import datetime
+from unittest.mock import patch
 
 import pytest
 
@@ -8,14 +8,18 @@ from device_monitor.core.validators import validate_main_thread, validate_time_i
 
 
 class TestValidators:
-    def test_validate_incorrect_main_thread(self):
-        with pytest.raises(Exception) as cause:
-            assert isinstance(cause, MainThreadError)
-            validate_main_thread(thread_id=12345)
+    def test_validate_incorrect_main_thread(self, main_thread_id):
+        with patch("threading.get_ident") as mock_thread:
+            mock_thread.return_value = main_thread_id
 
-    def test_validate_correct_main_thread(self):
-        main_thread_id = threading.get_ident()
-        validate_main_thread(thread_id=main_thread_id)
+            with pytest.raises(Exception) as cause:
+                assert isinstance(cause, MainThreadError)
+                validate_main_thread(thread_id=main_thread_id + 1)
+
+    def test_validate_correct_main_thread(self, main_thread_id):
+        with patch("threading.get_ident") as mock_thread:
+            mock_thread.return_value = main_thread_id
+            validate_main_thread(thread_id=main_thread_id)
 
     @pytest.mark.parametrize(
         ["interval", "last_update", "should_raise"],
