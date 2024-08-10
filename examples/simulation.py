@@ -72,18 +72,23 @@ threading.Thread(target=run_start_in_thread, name="ExampleThread").start()
 # Run the device manager
 device_manager.start()
 
-# Get readings immediately
-logging.info("Getting readings...")
-readings = device_manager.get_statuses()
-logging.info(f"Readings: {readings}")
+# Wait some time
+time.sleep(2)
+
+
+# Start a thread that will read the device readings every second
+def get_readings():
+    while device_manager._is_running:  # Private variable, just for demonstration purposes
+        readings = device_manager.get_statuses()
+        logging.info(f"Readings: {readings}")
+        time.sleep(1)
+
+
+threading.Thread(target=get_readings, name="ReadingThread").start()
+
 
 # Wait some time, so the manager can update the devices
 time.sleep(2)
-
-# Get readings again
-logging.info("Getting readings...")
-readings = device_manager.get_statuses()
-logging.info(f"Readings: {readings}")
 
 # Add some readings to the devices
 for device in sample_devices:
@@ -92,14 +97,6 @@ for device in sample_devices:
 
     with open(data_path, "w") as file:
         json.dump(device_data, file, indent=4)
-
-# Wait some time, so the manager can update the devices
-time.sleep(2)
-
-# Get readings again
-logging.info("Getting readings...")
-readings = device_manager.get_statuses()
-logging.info(f"Readings: {readings}")
 
 # Wait some time to see the outputs
 time.sleep(5)
@@ -117,13 +114,8 @@ with open(data_path, "w") as file:
 # Oops, one device disconnected!
 os.remove(f"{DATA_DIRECTORY_PATH}/{sample_devices[1].id}.json")
 
-# Wait some time, so the manager can update the devices
-time.sleep(2)
-
-# Get readings again
-logging.info("Getting readings...")
-readings = device_manager.get_statuses()
-logging.info(f"Readings: {readings}")
+# Wait some time to see the outputs
+time.sleep(5)
 
 # Stop the device manager
 device_manager.stop()
