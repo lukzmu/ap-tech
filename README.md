@@ -4,6 +4,7 @@
 
 This project is part of a recruitment task for AP-Tech.
 
+![Demo Image](/docs/demo.png)
 
 ## Requirements
 
