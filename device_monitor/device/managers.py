@@ -2,13 +2,21 @@ import threading
 from datetime import datetime
 from typing import Any
 
-from core.exceptions import MainThreadError
+from core.exceptions import TimeIntervalError
+from core.repositories import AbstractRepository
+from core.validators import validate_main_thread, validate_time_interval
 from device.mappers import DeviceMapper
 from device.models import Device
 
 
 class DeviceManager:
-    def __init__(self, main_thread_id: int, update_interval: int = 1) -> None:
+    def __init__(
+        self,
+        repository: AbstractRepository,
+        main_thread_id: int,
+        update_interval: int = 1,
+    ) -> None:
+        self._repository = repository
         self._devices: list[Device] = []
 
         # Threading settings
@@ -21,17 +29,22 @@ class DeviceManager:
         self._last_update: datetime | None = None
 
     def start(self) -> None:
-        self._validate_main_thread()
+        validate_main_thread()
         with self._thread_lock:
             while self._is_running:
-                if not self._check_time_interval():
-                    continue
+                try:
+                    validate_time_interval(
+                        interval=self._update_interval,
+                        last_update=self._last_update,
+                    )
 
-                self._update_devices()
-                self._process_devices()
+                    self._update_devices()
+                    self._process_devices()
+                except TimeIntervalError:
+                    pass
 
     def stop(self) -> None:
-        self._validate_main_thread()
+        validate_main_thread()
         with self._thread_lock:
             self._is_running = False
 
@@ -41,17 +54,6 @@ class DeviceManager:
                 device.id: DeviceMapper.model_to_dict(model=device)
                 for device in self._devices
             }
-
-    def _validate_main_thread(self) -> None:
-        if threading.get_ident() != self._main_thread_id:
-            raise MainThreadError
-
-    def _check_time_interval(self) -> bool:
-        current_time = datetime.now()
-        return (
-            self._last_update is None
-            or (current_time - self._last_update).seconds >= self._update_interval
-        )
 
     def _update_devices(self) -> None: ...
 
