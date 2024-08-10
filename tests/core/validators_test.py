@@ -4,6 +4,7 @@ from unittest.mock import patch
 import pytest
 from core.exceptions import MainThreadError, TimeIntervalError
 from core.validators import validate_main_thread, validate_time_interval
+from freezegun import freeze_time
 
 
 class TestValidators:
@@ -25,8 +26,8 @@ class TestValidators:
             (10, "2024-08-10 09:59:59", True),
         ],
     )
-    def test_validate_time_interval(self, freezer, interval, last_update, should_raise):
-        freezer.move_to("2024-08-10 10:00:00")
+    @freeze_time("2024-08-10 10:00:00")
+    def test_validate_time_interval(self, interval, last_update, should_raise):
         update_time = datetime.strptime(last_update, "%Y-%m-%d %H:%M:%S") if last_update else None
 
         if should_raise:
