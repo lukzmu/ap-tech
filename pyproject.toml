@@ -48,6 +48,9 @@ pythonpath = [
 
 [tool.coverage.run]
 branch = true
+omit = [
+    "*/__init__.py",
+]
 
 [build-system]
 requires = ["poetry-core"]
