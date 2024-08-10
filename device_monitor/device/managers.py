@@ -27,7 +27,7 @@ class DeviceManager:
         self._last_update: datetime | None = None
 
         # Threading settings
-        self._worker_thread = None
+        self._worker_thread: threading.Thread | None = None
         self._main_thread_id = main_thread_id
         self._thread_lock = threading.Lock()
         self._is_running = False
