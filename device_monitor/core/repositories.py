@@ -11,6 +11,10 @@ ModelType = TypeVar("ModelType")
 class DataRepository(ABC, Generic[ModelType]):
     _DATA_MAPPER: AbstractMapper[ModelType] | None
 
+    @abstractmethod
+    def add(self, model: ModelType) -> None:
+        pass
+
     def get(self) -> list[ModelType] | list[dict[str, Any]]:
         data = self._get_data()
         if self._DATA_MAPPER:

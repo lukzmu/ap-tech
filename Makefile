@@ -1,5 +1,5 @@
 run:
-	@docker compose up
+	@docker compose run demo python examples/simulation.py
 
 stop:
 	@docker compose down

@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Any
 
 from core.exceptions import DataFileNotFoundError, EmptyDataError, TimeIntervalError
-from core.repositories import AbstractRepository
+from core.repositories import DataRepository
 from core.validators import validate_main_thread, validate_time_interval
 from device.mappers import DeviceMapper
 from device.models import Device
@@ -13,7 +13,7 @@ from device.repositories import DeviceDataFileRepository
 class DeviceManager:
     def __init__(
         self,
-        device_repository: AbstractRepository,
+        device_repository: DataRepository,
         main_thread_id: int,
         update_interval: int = 1,
     ) -> None:
@@ -52,7 +52,7 @@ class DeviceManager:
     def get_statuses(self) -> dict[str, Any]:
         with self._thread_lock:
             return {
-                device.id: DeviceMapper.model_to_dict(model=device)
+                device.id: DeviceMapper.model_to_dict(model=device)["readings"]
                 for device in self._devices
             }
 

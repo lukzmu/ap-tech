@@ -1,7 +1,7 @@
 from typing import Any
 
 from core.mappers import AbstractMapper
-from core.models import Device
+from device.models import Device
 
 
 class DeviceMapper(AbstractMapper[Device]):
@@ -15,7 +15,10 @@ class DeviceMapper(AbstractMapper[Device]):
     @staticmethod
     def model_to_dict(model: Device) -> dict[str, Any]:
         return {
-            f"output_{reading_name}": reading_value
-            for reading_name, reading_value in model.readings.items()
-            if reading_name in model.expected_fields
+            "device_id": model.id,
+            "expected_fields": model.expected_fields,
+            "readings": {
+                f"output_{reading_name}": model.readings.get(reading_name)
+                for reading_name in model.expected_fields
+            },
         }
