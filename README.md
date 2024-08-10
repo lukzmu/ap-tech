@@ -4,7 +4,15 @@
 
 This project is part of a recruitment task for AP-Tech.
 
+## Task
+
 ![Demo Image](/docs/demo.png)
+
+- [x] Methods `start`, `stop` and `get_statuses` on `DeviceMonitor`.
+- [x] Thread safe methods and main thread methods,
+- [x] Possible to add new devices without code changes,
+- [x] Sample simulation script that writes out data every second,
+- [ ] Test it all out!
 
 ## Requirements
 
