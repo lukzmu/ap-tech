@@ -19,5 +19,6 @@ RUN poetry install --without dev \
 
 FROM builder AS development
 
+COPY . .
 RUN poetry install --only dev \
     && rm -rf ~/.cache
