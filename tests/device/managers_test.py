@@ -15,11 +15,9 @@ class TestDeviceMonitor:
 
     def test_start_monitor_success(self, device_monitor, main_thread_id):
         with (
-            patch("threading.get_ident") as mock_thread,
+            patch("threading.get_ident", return_value=main_thread_id),
             patch.object(threading.Thread, "start") as mock_start,
         ):
-            mock_thread.return_value = main_thread_id
-
             device_monitor.start()
 
             assert device_monitor._is_running is True
@@ -27,8 +25,7 @@ class TestDeviceMonitor:
             mock_start.assert_called_once()
 
     def test_start_monitor_already_running(self, device_monitor, main_thread_id):
-        with patch("threading.get_ident") as mock_thread:
-            mock_thread.return_value = main_thread_id
+        with patch("threading.get_ident", return_value=main_thread_id):
             device_monitor._is_running = True
 
             with pytest.raises(MonitorAlreadyRunningError):
@@ -36,11 +33,10 @@ class TestDeviceMonitor:
 
     def test_stop_monitor_success(self, device_monitor, main_thread_id):
         with (
-            patch("threading.get_ident") as mock_thread,
+            patch("threading.get_ident", return_value=main_thread_id),
             patch.object(threading.Thread, "is_alive") as mock_is_alive,
             patch.object(threading.Thread, "join") as mock_join,
         ):
-            mock_thread.return_value = main_thread_id
             mock_is_alive.return_value = True
             device_monitor._is_running = True
             device_monitor._worker_thread = threading.Thread(target=lambda: time.sleep(1))
@@ -53,8 +49,7 @@ class TestDeviceMonitor:
             mock_join.assert_called_once()
 
     def test_stop_monitor_not_running(self, device_monitor, main_thread_id):
-        with patch("threading.get_ident") as mock_thread:
-            mock_thread.return_value = main_thread_id
+        with patch("threading.get_ident", return_value=main_thread_id):
             with pytest.raises(MonitorIsNotRunningError):
                 device_monitor.stop()
 

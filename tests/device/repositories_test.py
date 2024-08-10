@@ -46,7 +46,10 @@ class TestDeviceDataFileRepository:
         assert len(data) == 1
         assert data[0] == device_reading
 
-    def test_get_device_data_empty(self, device_data_file_repository):
-        with patch("json.load", return_value=[]):
+    def test_get_device_data_empty(self, device_data_file_repository, main_thread_id):
+        with (
+            patch("threading.get_ident", return_value=main_thread_id),
+            patch("json.load", return_value=[]),
+        ):
             with pytest.raises(EmptyDataError):
                 device_data_file_repository.get()
