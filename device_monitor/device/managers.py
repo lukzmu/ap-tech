@@ -6,13 +6,13 @@ from typing import Any
 from core.exceptions import DataFileNotFoundError, EmptyDataError, TimeIntervalError
 from core.repositories import DataRepository
 from core.validators import validate_main_thread, validate_time_interval
-from device.exceptions import ManagerAlreadyRunningError, ManagerIsNotRunningError
+from device.exceptions import MonitorAlreadyRunningError, MonitorIsNotRunningError
 from device.mappers import DeviceMapper
 from device.models import Device
 from device.repositories import DeviceDataFileRepository
 
 
-class DeviceManager:
+class DeviceMonitor:
     def __init__(
         self,
         device_repository: DataRepository,
@@ -36,19 +36,19 @@ class DeviceManager:
         validate_main_thread(thread_id=self._main_thread_id)
 
         if self._is_running:
-            raise ManagerAlreadyRunningError
+            raise MonitorAlreadyRunningError
 
         with self._thread_lock:
             logging.info("Running device manager...")
             self._is_running = True
-            self._worker_thread = threading.Thread(target=self._synchronize_data, daemon=True, name="DeviceManager")
+            self._worker_thread = threading.Thread(target=self._synchronize_data, daemon=True, name="DeviceMonitor")
             self._worker_thread.start()
 
     def stop(self) -> None:
         validate_main_thread(thread_id=self._main_thread_id)
 
         if not self._worker_thread or not self._worker_thread.is_alive():
-            raise ManagerIsNotRunningError
+            raise MonitorIsNotRunningError
 
         with self._thread_lock:
             logging.info("Stopping device manager...")

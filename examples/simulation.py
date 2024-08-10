@@ -5,7 +5,7 @@ import random
 import threading
 import time
 
-from device_monitor import Device, DeviceFileRepository, DeviceManager
+from device_monitor import Device, DeviceFileRepository, DeviceMonitor
 
 DEVICES_FILE_PATH = "examples/data/devices.json"
 DATA_DIRECTORY_PATH = "examples/data"
@@ -51,7 +51,7 @@ except Exception as e:
     logging.error(e)
 
 # Create a new device manager
-device_manager = DeviceManager(
+device_manager = DeviceMonitor(
     device_repository=repository,
     main_thread_id=main_thread_id,
 )

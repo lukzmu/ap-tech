@@ -3,11 +3,11 @@ class DeviceAlreadyExists(Exception):
         super().__init__(f"Device with id {id} already exists.")
 
 
-class ManagerAlreadyRunningError(Exception):
+class MonitorAlreadyRunningError(Exception):
     def __init__(self) -> None:
-        super().__init__("Manager is already running.")
+        super().__init__("Monitor is already running.")
 
 
-class ManagerIsNotRunningError(Exception):
+class MonitorIsNotRunningError(Exception):
     def __init__(self) -> None:
-        super().__init__("Manager is not running.")
+        super().__init__("Monitor is not running.")
