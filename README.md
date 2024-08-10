@@ -1,4 +1,7 @@
-[![codecov](https://codecov.io/gh/lukzmu/ap-tech/graph/badge.svg?token=VZ1R9DVT79)](https://codecov.io/gh/lukzmu/ap-tech)
+![Codecov](https://img.shields.io/codecov/c/github/lukzmu/ap-tech)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/lukzmu/ap-tech/main.yml)
+![GitHub License](https://img.shields.io/github/license/lukzmu/ap-tech)
+
 
 # Device Monitor
 
@@ -12,7 +15,7 @@ This project is part of a recruitment task for AP-Tech.
 - [x] Thread safe methods and main thread methods,
 - [x] Possible to add new devices without code changes,
 - [x] Sample simulation script that writes out data every second,
-- [ ] Test it all out!
+- [x] 100% coverage in tests.
 
 ## Requirements
 
