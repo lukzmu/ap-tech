@@ -2,7 +2,7 @@ import json
 from abc import ABC, abstractmethod
 from typing import Any, Generic, TypeVar
 
-from core.exceptions import DataFileNotFoundError, NoDataError
+from core.exceptions import DataFileNotFoundError, EmptyDataError
 from core.mappers import AbstractMapper
 
 ModelType = TypeVar("ModelType")
@@ -31,7 +31,7 @@ class FileRepository(DataRepository[ModelType]):
             with open(self._file_path) as file:
                 data = json.load(file)
                 if not data:
-                    raise NoDataError
+                    raise EmptyDataError
                 return data
 
         except FileNotFoundError as cause:

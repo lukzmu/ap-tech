@@ -2,7 +2,7 @@ import threading
 from datetime import datetime
 from typing import Any
 
-from core.exceptions import DataFileNotFoundError, NoDataError, TimeIntervalError
+from core.exceptions import DataFileNotFoundError, EmptyDataError, TimeIntervalError
 from core.repositories import AbstractRepository
 from core.validators import validate_main_thread, validate_time_interval
 from device.mappers import DeviceMapper
@@ -67,5 +67,5 @@ class DeviceManager:
                 data_repository = DeviceDataFileRepository(file_path=data_path)
                 readings = data_repository.get()
                 device.readings = readings[-1]
-            except (DataFileNotFoundError, NoDataError) as cause:
+            except (DataFileNotFoundError, EmptyDataError) as cause:
                 device.readings = {"error": str(cause)}
