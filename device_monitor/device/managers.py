@@ -72,12 +72,20 @@ class DeviceManager:
     def _update_devices(self) -> None:
         logging.info("Updating devices...")
         updated_devices = self._device_repository.get()
+
+        available_device_ids = [device.id for device in self._devices]
+        updated_device_ids = [device.id for device in updated_devices]
+
         for updated_device in updated_devices:
-            if updated_device.id not in [device.id for device in self._devices]:
+            if updated_device.id not in available_device_ids:
                 self._devices.append(updated_device)
                 continue
 
             for device in self._devices:
+                if device.id not in updated_device_ids:
+                    self._devices.remove(device)
+                    break
+
                 if device.id == updated_device.id:
                     device.expected_fields = updated_device.expected_fields
                     break
