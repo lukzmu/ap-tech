@@ -2,21 +2,22 @@ import threading
 from datetime import datetime
 from typing import Any
 
-from core.exceptions import TimeIntervalError
+from core.exceptions import DataFileNotFoundError, NoDataError, TimeIntervalError
 from core.repositories import AbstractRepository
 from core.validators import validate_main_thread, validate_time_interval
 from device.mappers import DeviceMapper
 from device.models import Device
+from device.repositories import DeviceDataFileRepository
 
 
 class DeviceManager:
     def __init__(
         self,
-        repository: AbstractRepository,
+        device_repository: AbstractRepository,
         main_thread_id: int,
         update_interval: int = 1,
     ) -> None:
-        self._repository = repository
+        self._device_repository = device_repository
         self._devices: list[Device] = []
 
         # Threading settings
@@ -55,6 +56,16 @@ class DeviceManager:
                 for device in self._devices
             }
 
-    def _update_devices(self) -> None: ...
+    def _update_devices(self) -> None:
+        self._devices = self._device_repository.get()
 
-    def _process_devices(self) -> None: ...
+    def _process_devices(self) -> None:
+        self._last_update = datetime.now()
+        for device in self._devices:
+            try:
+                data_path = f"{self._device_repository.data_location}/{device.id}.json"
+                data_repository = DeviceDataFileRepository(file_path=data_path)
+                readings = data_repository.get()
+                device.readings = readings[-1]
+            except (DataFileNotFoundError, NoDataError) as cause:
+                device.readings = {"error": str(cause)}
