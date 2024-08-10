@@ -90,16 +90,25 @@ threading.Thread(target=get_readings, name="ReadingThread").start()
 # Wait some time, so the manager can update the devices
 time.sleep(2)
 
-# Add some readings to the devices
-for device in sample_devices:
-    data_path = f"{DATA_DIRECTORY_PATH}/{device.id}.json"
-    device_data = {field: random.randint(0, 1000) for field in device.expected_fields}
 
-    with open(data_path, "w") as file:
-        json.dump(device_data, file, indent=4)
+# Add some readings to the devices
+def create_readings():
+    for device in sample_devices:
+        data_path = f"{DATA_DIRECTORY_PATH}/{device.id}.json"
+        device_data = {field: random.randint(0, 1000) for field in device.expected_fields}
+
+        with open(data_path, "w") as file:
+            json.dump(device_data, file, indent=4)
+
+
+create_readings()
+
 
 # Wait some time to see the outputs
 time.sleep(5)
+
+# Update the readings on the go
+create_readings()
 
 # Show that you can add a new device at any point
 new_device = Device(id=4, expected_fields=["stamina", "charisma", "intelligence"])
