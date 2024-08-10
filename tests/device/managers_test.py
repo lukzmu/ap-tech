@@ -78,7 +78,7 @@ class TestDeviceMonitor:
                 ],
                 2,
             ),
-            ({"device_id": 2, "expected_fields": ["current"]}, 1),
+            ([{"device_id": 2, "expected_fields": ["current"]}], 1),
         ],
     )
     def test_start_updates_devices(self, device_monitor, device, main_thread_id, file_content, expected_count):
