@@ -1,7 +1,6 @@
 import pytest
-
-from device_monitor.device.models import Device
-from device_monitor.device.repositories import DeviceDataFileRepository, DeviceFileRepository
+from device.models import Device
+from device.repositories import DeviceDataFileRepository, DeviceFileRepository
 
 
 @pytest.fixture

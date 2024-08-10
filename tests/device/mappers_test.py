@@ -1,9 +1,8 @@
 from typing import Any
 
 import pytest
-
-from device_monitor.device.mappers import DeviceMapper
-from device_monitor.device.models import Device
+from device.mappers import DeviceMapper
+from device.models import Device
 
 
 class TestMappers:

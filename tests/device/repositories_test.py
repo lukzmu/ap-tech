@@ -1,9 +1,8 @@
 import json
 
 import pytest
-
-from device_monitor.device.exceptions import DeviceAlreadyExists
-from device_monitor.device.models import Device
+from device.exceptions import DeviceAlreadyExists
+from device.models import Device
 
 
 class TestDeviceFileRepository:
@@ -27,8 +26,7 @@ class TestDeviceFileRepository:
             json.dump(original_data, file)
 
     def test_add_existing_device(self, device_file_repository, device):
-        with pytest.raises(Exception) as cause:
-            assert isinstance(cause, DeviceAlreadyExists)
+        with pytest.raises(DeviceAlreadyExists):
             device_file_repository.add(device)
 
     def test_get_devices(self, device_file_repository, device):

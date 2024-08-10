@@ -1,4 +1,4 @@
-from device_monitor.device.models import Device
+from device.models import Device
 
 
 class TestModels:

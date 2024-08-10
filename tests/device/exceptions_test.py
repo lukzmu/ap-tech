@@ -1,6 +1,5 @@
 import pytest
-
-from device_monitor.device.exceptions import DeviceAlreadyExists, MonitorAlreadyRunningError, MonitorIsNotRunningError
+from device.exceptions import DeviceAlreadyExists, MonitorAlreadyRunningError, MonitorIsNotRunningError
 
 
 class TestExceptions:
@@ -13,11 +12,10 @@ class TestExceptions:
         ],
     )
     def test_exception_messages(self, exception_class, message, parameter):
-        with pytest.raises(Exception) as cause:
-            assert isinstance(cause, exception_class)
-            assert str(cause) == message
-
+        with pytest.raises(exception_class) as cause:
             if parameter:
                 raise exception_class(parameter)
             else:
                 raise exception_class()
+
+        assert str(cause.value) == message

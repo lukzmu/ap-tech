@@ -3,9 +3,8 @@ import time
 from unittest.mock import patch
 
 import pytest
-
-from device_monitor.device.exceptions import MonitorAlreadyRunningError, MonitorIsNotRunningError
-from device_monitor.device.managers import DeviceMonitor
+from device.exceptions import MonitorAlreadyRunningError, MonitorIsNotRunningError
+from device.managers import DeviceMonitor
 
 
 class TestDeviceMonitor:
@@ -31,8 +30,7 @@ class TestDeviceMonitor:
             mock_thread.return_value = main_thread_id
             device_monitor._is_running = True
 
-            with pytest.raises(Exception) as cause:
-                assert isinstance(cause, MonitorAlreadyRunningError)
+            with pytest.raises(MonitorAlreadyRunningError):
                 device_monitor.start()
 
     def test_stop_monitor_success(self, device_monitor, main_thread_id):
@@ -56,8 +54,7 @@ class TestDeviceMonitor:
     def test_stop_monitor_not_running(self, device_monitor, main_thread_id):
         with patch("threading.get_ident") as mock_thread:
             mock_thread.return_value = main_thread_id
-            with pytest.raises(Exception) as cause:
-                assert isinstance(cause, MonitorIsNotRunningError)
+            with pytest.raises(MonitorIsNotRunningError):
                 device_monitor.stop()
 
     def test_get_statuses(self, device_monitor, device, device_mapped_reading):
