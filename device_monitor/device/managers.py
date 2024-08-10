@@ -39,7 +39,7 @@ class DeviceMonitor:
             raise MonitorAlreadyRunningError
 
         with self._thread_lock:
-            logging.info("Running device manager...")
+            logging.info("Running device monitor...")
             self._is_running = True
             self._worker_thread = threading.Thread(target=self._synchronize_data, daemon=True, name="DeviceMonitor")
             self._worker_thread.start()
@@ -51,7 +51,7 @@ class DeviceMonitor:
             raise MonitorIsNotRunningError
 
         with self._thread_lock:
-            logging.info("Stopping device manager...")
+            logging.info("Stopping device monitor...")
             self._is_running = False
             self._worker_thread.join()
             self._worker_thread = None

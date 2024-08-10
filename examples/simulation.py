@@ -50,18 +50,18 @@ try:
 except Exception as e:
     logging.error(e)
 
-# Create a new device manager
-device_manager = DeviceMonitor(
+# Create a new device monitor
+device_monitor = DeviceMonitor(
     device_repository=repository,
     main_thread_id=main_thread_id,
 )
 
 
-# Show that you cant run the device manager from a thread other than the main thread
+# Show that you cant run the device monitor from a thread other than the main thread
 # (Applies to start and stop methods)
 def run_start_in_thread():
     try:
-        device_manager.start()
+        device_monitor.start()
     except Exception as e:
         logging.error(e)
 
@@ -69,8 +69,8 @@ def run_start_in_thread():
 threading.Thread(target=run_start_in_thread, name="ExampleThread").start()
 
 
-# Run the device manager
-device_manager.start()
+# Run the device monitor
+device_monitor.start()
 
 # Wait some time
 time.sleep(2)
@@ -78,8 +78,8 @@ time.sleep(2)
 
 # Start a thread that will read the device readings every second
 def get_readings():
-    while device_manager._is_running:  # Private variable, just for demonstration purposes
-        readings = device_manager.get_statuses()
+    while device_monitor._is_running:  # Private variable, just for demonstration purposes
+        readings = device_monitor.get_statuses()
         logging.info(f"Readings: {readings}")
         time.sleep(1)
 
@@ -87,7 +87,7 @@ def get_readings():
 threading.Thread(target=get_readings, name="ReadingThread").start()
 
 
-# Wait some time, so the manager can update the devices
+# Wait some time, so the monitor can update the devices
 time.sleep(2)
 
 
@@ -126,8 +126,8 @@ os.remove(f"{DATA_DIRECTORY_PATH}/{sample_devices[1].id}.json")
 # Wait some time to see the outputs
 time.sleep(5)
 
-# Stop the device manager
-device_manager.stop()
+# Stop the device monitor
+device_monitor.stop()
 
 # Wait some time to see that the thread really stopped
 time.sleep(5)
