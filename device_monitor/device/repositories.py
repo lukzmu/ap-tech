@@ -1,7 +1,10 @@
 import json
+import logging
+import os
 from typing import Any
 
 from core.repositories import FileRepository
+from device.exceptions import DeviceAlreadyExists
 from device.mappers import DeviceMapper
 from device.models import Device
 
