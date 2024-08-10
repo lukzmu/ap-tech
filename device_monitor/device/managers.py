@@ -71,7 +71,16 @@ class DeviceManager:
 
     def _update_devices(self) -> None:
         logging.info("Updating devices...")
-        self._devices = self._device_repository.get()
+        updated_devices = self._device_repository.get()
+        for updated_device in updated_devices:
+            if updated_device.id not in [device.id for device in self._devices]:
+                self._devices.append(updated_device)
+                continue
+
+            for device in self._devices:
+                if device.id == updated_device.id:
+                    device.expected_fields = updated_device.expected_fields
+                    break
 
     def _process_readings(self) -> None:
         logging.info("Processing readings...")
