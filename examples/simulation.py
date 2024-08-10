@@ -110,7 +110,7 @@ repository.add(model=new_device)
 
 # Create some data for the new device
 data_path = f"{DATA_DIRECTORY_PATH}/{new_device.id}.json"
-new_device_data = {field: random.randint(0, 1000) for field in device.expected_fields}
+new_device_data = {field: random.randint(0, 1000) for field in new_device.expected_fields}
 with open(data_path, "w") as file:
     json.dump(new_device_data, file, indent=4)
 
