@@ -9,9 +9,6 @@ runs:
           uses: actions/setup-python@v4
           with:
               python-version: "3.12"
-        - name: Install distutils
-          run: apt-get update && apt-get install -y python3-distutils
-          shell: bash
         - name: Setup Poetry
           run: pip install -U pip wheel "poetry==1.8.3"
           shell: bash        
