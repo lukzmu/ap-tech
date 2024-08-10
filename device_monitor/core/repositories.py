@@ -32,7 +32,7 @@ class FileRepository(DataRepository[ModelType]):
                 data = json.load(file)
                 if not data:
                     raise EmptyDataError
-                return data
+                return data if isinstance(data, list) else [data]
 
         except FileNotFoundError as cause:
             raise DataFileNotFoundError(file_path=self._file_path) from cause
