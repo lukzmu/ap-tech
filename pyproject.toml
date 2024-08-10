@@ -29,6 +29,11 @@ select = [
     "UP",  # pyupgrade
 ]
 
+[tool.ruff.lint.per-file-ignores]
+"*/__init__.py" = [
+    "F401",  # unused import
+]
+
 [tool.mypy]
 disallow_untyped_defs = true
 disable_error_code = [
