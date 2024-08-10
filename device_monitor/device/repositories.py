@@ -17,6 +17,7 @@ class DeviceFileRepository(FileRepository[Device]):
         self.data_location = data_location
 
     def add(self, model: Device) -> None:
+        logging.info(f"Adding device with id {model.id} to {self._file_path}")
         data = []
         if os.path.exists(self._file_path):
             with open(self._file_path) as file:
