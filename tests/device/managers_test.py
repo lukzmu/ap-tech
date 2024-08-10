@@ -5,6 +5,7 @@ from unittest.mock import patch
 import pytest
 from device.exceptions import MonitorAlreadyRunningError, MonitorIsNotRunningError
 from device.managers import DeviceMonitor
+from device.repositories import DeviceFileRepository
 
 
 class TestDeviceMonitor:
@@ -65,3 +66,31 @@ class TestDeviceMonitor:
 
         assert len(statuses) == 1
         assert statuses == {device.id: device_mapped_reading}
+
+    @pytest.mark.parametrize(
+        ["file_content", "expected_count"],
+        [
+            ([{"device_id": 1, "expected_fields": ["current", "voltage"]}], 1),
+            (
+                [
+                    {"device_id": 1, "expected_fields": ["current", "voltage"]},
+                    {"device_id": 2, "expected_fields": ["current"]},
+                ],
+                2,
+            ),
+            ({"device_id": 2, "expected_fields": ["current"]}, 1),
+        ],
+    )
+    def test_start_updates_devices(self, device_monitor, device, main_thread_id, file_content, expected_count):
+        with (
+            patch("threading.get_ident", return_value=main_thread_id),
+            patch.object(DeviceFileRepository, "_get_data", return_value=file_content),
+        ):
+            device_monitor._devices = [device]
+
+            device_monitor.start()
+            time.sleep(1)  # Allow time for the worker thread to update the devices
+
+            device_monitor.is_running = False
+
+            assert len(device_monitor._devices) == expected_count
