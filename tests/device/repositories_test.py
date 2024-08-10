@@ -1,6 +1,8 @@
 import json
+from unittest.mock import patch
 
 import pytest
+from core.exceptions import EmptyDataError
 from device.exceptions import DeviceAlreadyExists
 from device.models import Device
 
@@ -38,8 +40,13 @@ class TestDeviceFileRepository:
 
 
 class TestDeviceDataFileRepository:
-    def get_device_data(self, device_data_file_repository, device_reading):
+    def test_get_device_data(self, device_data_file_repository, device_reading):
         data = device_data_file_repository.get()
 
         assert len(data) == 1
-        assert data[0] == device_reading[0]
+        assert data[0] == device_reading
+
+    def test_get_device_data_empty(self, device_data_file_repository):
+        with patch("json.load", return_value=[]):
+            with pytest.raises(EmptyDataError):
+                device_data_file_repository.get()

@@ -19,7 +19,7 @@ class DataRepository(ABC, Generic[ModelType]):
 
     @abstractmethod
     def _get_data(self) -> list[dict[str, Any]]:
-        pass
+        pass  # pragma: no cover
 
 
 class FileRepository(DataRepository[ModelType]):

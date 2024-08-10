@@ -20,7 +20,7 @@ lint-autofix:
 		&& ruff check --fix"
 
 test:
-	@docker compose run demo pytest --disable-warnings
+	@docker compose run demo pytest
 
 test-cov:
 	@docker compose run demo pytest --cov=device_monitor tests

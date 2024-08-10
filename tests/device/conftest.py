@@ -12,7 +12,7 @@ def device_file_repository():
 
 @pytest.fixture
 def device_data_file_repository():
-    file_path = "data/1.json"
+    file_path = "tests/data/1.json"
     return DeviceDataFileRepository(file_path=file_path)
 
 
