@@ -22,7 +22,6 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(threadName)s - %(levelname)s - %(message)s",
 )
-logging.getLogger().setLevel(logging.INFO)
 
 # Get main thread information
 main_thread_id = threading.get_ident()
