@@ -6,7 +6,7 @@ from core.exceptions import MainThreadError, TimeIntervalError
 
 def validate_main_thread(thread_id: int) -> None:
     if threading.get_ident() != thread_id:
-        raise MainThreadError()
+        raise MainThreadError
 
 
 def validate_time_interval(interval: int, last_update: datetime | None) -> None:
