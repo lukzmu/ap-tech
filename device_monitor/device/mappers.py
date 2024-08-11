@@ -18,9 +18,10 @@ class DeviceMapper(AbstractMapper[Device]):
             "device_id": model.id,
             "expected_fields": model.expected_fields,
             "readings": (
-                {
-                    f"output_{reading_name}": model.readings.get(reading_name)
-                    for reading_name in model.expected_fields
+                model.readings
+                if model.readings and "error" in model.readings
+                else {
+                    f"output_{reading_name}": model.readings.get(reading_name) for reading_name in model.expected_fields
                 }
                 if model.readings
                 else None
